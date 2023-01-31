@@ -217,7 +217,7 @@ function AGS_Diplomacy_Create(relations)
 			total_taxes = {amount = 0},
 			total_cost = {amount = 0},
 			players = {},
-			headerRelations = Loc_FormatText("$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:234"),
+			headerRelations = Loc_FormatText("$fa8b620104d04e56bdccacdde1f23a61:234"),
 		},
 		cue = {							-- Event cue template (shown when player changes relationship or receives tribute) 
 			lifetime = 10.0,
@@ -254,9 +254,9 @@ function AGS_Diplomacy_Create(relations)
 			{ resource_type = RT_Stone,image = "pack://application:,,,/WPFGUI;component/icons/resources/resource_stone_icon.png", help = 11164970},
 		},
 		relations = {
-			{ relation_type = R_ALLY, image = "pack://application:,,,/WPFGUI;component/icons/common/orders/rally.png", help = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:239", title = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:235" },
-			{ relation_type = R_NEUTRAL, image = "pack://application:,,,/WPFGUI;component/icons/races/common/buildings/market.png", help = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:240", title = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:236" },
-			{ relation_type = R_ENEMY, image = "pack://application:,,,/WPFGUI;component/icons/races/common/buildings/barracks.png", help = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:241", title = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:237" },
+			{ relation_type = R_ALLY, image = "pack://application:,,,/WPFGUI;component/icons/common/orders/rally.png", help = "$fa8b620104d04e56bdccacdde1f23a61:239", title = "$fa8b620104d04e56bdccacdde1f23a61:235" },
+			{ relation_type = R_NEUTRAL, image = "pack://application:,,,/WPFGUI;component/icons/races/common/buildings/market.png", help = "$fa8b620104d04e56bdccacdde1f23a61:240", title = "$fa8b620104d04e56bdccacdde1f23a61:236" },
+			{ relation_type = R_ENEMY, image = "pack://application:,,,/WPFGUI;component/icons/races/common/buildings/barracks.png", help = "$fa8b620104d04e56bdccacdde1f23a61:241", title = "$fa8b620104d04e56bdccacdde1f23a61:237" },
 		},
 		age = {						-- Loc_string lookup table (indexed by age)
 			Loc_GetString(11180928),					-- I

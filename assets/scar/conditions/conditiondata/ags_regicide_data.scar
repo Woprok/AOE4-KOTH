@@ -12,9 +12,9 @@ AGS_OBJECTIVES_REGICIDE = {
 	-- Your King must survive. 
 	title = "$11218487", 
 	-- "Failed to protect the king."
-	title_lost = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:263",
+	title_lost = "$fa8b620104d04e56bdccacdde1f23a61:263",
 	-- "Truly a king of everyone you are."
-	title_victory = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:262",
+	title_victory = "$fa8b620104d04e56bdccacdde1f23a61:262",
 	description = Loc_Empty(),
 	icon = "icons\\objectives\\objectives_leader",
 	data_template = DT_PRIMARY_DEFAULT,
@@ -27,14 +27,14 @@ AGS_OBJECTIVES_REGICIDE = {
 
 AGS_NOTIFICATIONS_REGICIDE = {
 	-- "%1PLAYER_NAME% assassinated"
-	title = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:264",
+	title = "$fa8b620104d04e56bdccacdde1f23a61:264",
 	sfx = nil,	
 }
 
 AGS_NOTIFICATIONS_REGICIDE_ATTACKED = {
 	-- "King under attack"
-	self_attacked = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:266",
+	self_attacked = "$fa8b620104d04e56bdccacdde1f23a61:266",
 	-- "Enemy attacking %1PLAYER_NAME%'s king"
-	ally_attacked = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:265",
+	ally_attacked = "$fa8b620104d04e56bdccacdde1f23a61:265",
 	attacked_sfx = "mus_stinger_landmark_building_damaged",
 }

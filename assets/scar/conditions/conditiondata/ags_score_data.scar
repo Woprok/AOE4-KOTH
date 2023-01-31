@@ -10,13 +10,13 @@
 AGS_OBJECTIVES_SCORE = {
 	reason = AGS_WR_SCORE,
 	-- "Survive and outshine everyone."
-	title = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:270", 
+	title = "$fa8b620104d04e56bdccacdde1f23a61:270", 
 	-- "Survive and outshine everyone. Rank %1RANK_POSITION%."
-	title_rank = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:312",
+	title_rank = "$fa8b620104d04e56bdccacdde1f23a61:312",
 	-- "Your empire was forgotten by the history."
-	title_lost = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:271",
+	title_lost = "$fa8b620104d04e56bdccacdde1f23a61:271",
 	-- "Your Empire shines brightest."
-	title_victory = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:272",
+	title_victory = "$fa8b620104d04e56bdccacdde1f23a61:272",
 	description = Loc_Empty(),
 	icon = "icons\\objectives\\objectives_generic",
 	data_template = DT_PRIMARY_DEFAULT,
@@ -29,15 +29,15 @@ AGS_OBJECTIVES_SCORE = {
 
 AGS_NOTIFICATIONS_SCORE = {
 	-- "Still waits %1PLAYER_NAME% for Godot."
-	title = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:273",
+	title = "$fa8b620104d04e56bdccacdde1f23a61:273",
 	sfx = nil,	
 }
 
 AGS_NOTIFICATIONS_SCORE_COUNTDOWN = {
 	-- "%1MINUTES_REMAINING% minutes until Game Ends"
-	title_victory = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:310",
-	title_defeat = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:310",
+	title_victory = "$fa8b620104d04e56bdccacdde1f23a61:310",
+	title_defeat = "$fa8b620104d04e56bdccacdde1f23a61:310",
 	-- "1 minute until Game Ends"
-	title_final_victory = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:311",
-	title_final_defeat = "$fa8b6201-04d0-4e56-bdcc-acdde1f23a61:311",	
+	title_final_victory = "$fa8b620104d04e56bdccacdde1f23a61:311",
+	title_final_defeat = "$fa8b620104d04e56bdccacdde1f23a61:311",	
 }
