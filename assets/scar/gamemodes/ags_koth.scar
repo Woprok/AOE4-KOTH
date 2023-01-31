@@ -39,5 +39,9 @@ function AGS_KOTH_AdjustSettings()
 	AGS_GLOBAL_SETTINGS.Settlement = AGS_GS_SETTLEMENT_SETTLED
 	AGS_GLOBAL_SETTINGS.RevealSpawn = false
 	AGS_GLOBAL_SETTINGS.IsAdjustingAI = false
-	AGS_GLOBAL_SETTINGS.RevealFowOnElimination = true
+	
+	
+	
+	--AGS_GLOBAL_SETTINGS.RevealFowOnElimination = true
+	AGS_GLOBAL_SETTINGS.PlayerColors.IsEnforcing = true
 end
