@@ -237,8 +237,8 @@ function AGS_MilitarySites_ApplyRatesSingle(bps, playerId)
 	for _, sbp in pairs(bps) do 
 		if AGS_MILITARY_SITES_MODIFIERS[playerId][sbp.PropertyBagGroupID] == nil then
 			AGS_MILITARY_SITES_MODIFIERS[playerId][sbp.PropertyBagGroupID] = true
-			AGS_MilitarySites_ApplySetModifier(playerId, sbp, "capture_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesUpRate)
-			AGS_MilitarySites_ApplySetModifier(playerId, sbp, "capture_revert_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesDownRate)
+			AGS_MilitarySites_ApplyAddModifier(playerId, sbp, "capture_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesUpRate)
+			AGS_MilitarySites_ApplyMulModifier(playerId, sbp, "capture_revert_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesDownRate)
 		end
 	end
 end
@@ -248,16 +248,12 @@ function AGS_MilitarySites_ApplyRates(bps)
 		if AGS_MILITARY_SITES_MODIFIERS[sbp.PropertyBagGroupID] == nil then
 			AGS_MILITARY_SITES_MODIFIERS[sbp.PropertyBagGroupID] = true
 			for _, player in pairs(PLAYERS) do	
-				AGS_MilitarySites_ApplySetModifier(player.id, sbp, "capture_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesUpRate)
-				AGS_MilitarySites_ApplySetModifier(player.id, sbp, "capture_revert_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesDownRate)
+				AGS_MilitarySites_ApplyAddModifier(player.id, sbp, "capture_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesUpRate)
+				AGS_MilitarySites_ApplyMulModifier(player.id, sbp, "capture_revert_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesDownRate)
 			end
 		end
 	end
 end
--- Apply function.
-function AGS_MilitarySites_ApplySetModifier(player_id, modifier_sbp, modifier_type, modifier_value)
-	Modifier_ApplyToPlayer(Modifier_Create(MAT_SquadType, modifier_type, MUT_Set, false, modifier_value, modifier_sbp), player_id, 0.0)
-end	
 -- Apply function.
 function AGS_MilitarySites_ApplyAddModifier(player_id, modifier_sbp, modifier_type, modifier_value)
 	Modifier_ApplyToPlayer(Modifier_Create(MAT_SquadType, modifier_type, MUT_Addition, false, modifier_value, modifier_sbp), player_id, 0.0)
