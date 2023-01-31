@@ -1,0 +1,117 @@
+<instance version="4" override_type="merge" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\site_ext" List.ItemID="-178275333">
+			<float name="extra_build_test_footprint_x" value="0" />
+			<bool name="snap_to_terrain" value="False" />
+			<float name="extra_build_test_footprint_z" value="0" />
+			<float name="extra_build_test_footprint_offset_x" value="0" />
+			<float name="extra_build_test_footprint_offset_z" value="0" />
+			<float name="minimum_build_test_footprint_x" value="0" />
+			<float name="minimum_build_test_footprint_z" value="0" />
+			<enum name="impass_cell_check" value="AllCellsFree" />
+			<group name="footprint_scale">
+				<float name="x" value="12.5" />
+				<float name="y" value="12.5" />
+			</group>
+			<bool name="forced_axis_aligned_footprint" value="True" />
+			<bool name="remove_if_constructed_over" value="False" />
+			<list name="snap_to_surface_types">
+				<enum name="surface_type" value="Ground" List.ItemID="-1933226435" />
+			</list>
+			<bool name="snap_to_construction_grid" value="False" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\strategic_point_ext" List.ItemID="-2047578088">
+			<float name="capture_time" value="5" />
+			<float name="revert_time" value="30" />
+			<float name="secure_radius" value="0" />
+			<bool name="use_decorator" value="True" />
+			<instance_reference name="entity_for_annihilation" value="" />
+			<list name="unsecure_time_by_race">
+			</list>
+			<template_reference name="capture_area_info" value="options\area_info_options\circle_area_option">
+				<float name="outer_radius" value="15" />
+				<float name="inner_radius" value="10" />
+				<bool name="is_two_dimensional" value="True" />
+				<enum name="dynamic_radius_type" value="fixed" />
+			</template_reference>
+			<bool name="instant_uncapture" value="True" />
+			<enum name="auto_revert_condition" value="none" />
+			<enum name="point_type" value="strategic_point" />
+			<group name="ui_reticules">
+				<instance_reference name="ui_reticule_neutral" value="ui_reticule\circle\capture_neutral_holy_site" />
+				<instance_reference name="ui_reticule_ally" value="ui_reticule\circle\capture_neutral_holy_site" />
+				<instance_reference name="ui_reticule_enemy" value="ui_reticule\circle\capture_neutral_holy_site" />
+				<instance_reference name="ui_reticule_ally_outofsupply" value="" />
+				<instance_reference name="ui_reticule_enemy_outofsupply" value="" />
+				<bool name="enable_team_color" value="True" />
+				<instance_reference name="ui_reticule_ally_capturing" value="ui_reticule\circle\capture_friendly" />
+				<instance_reference name="ui_reticule_enemy_capturing" value="ui_reticule\circle\capture_enemy" />
+			</group>
+			<enum name="on_capture_ownership_change" value="capturing_team" />
+			<enum name="contested_capture_type" value="pause_capture" />
+			<enum name="can_capture_team" value="any_team" />
+			<bool name="start_captured_if_owned" value="True" />
+			<list name="exclude_unit_types">
+			</list>
+			<group name="state_tree_references">
+				<template_reference name="self_capturing_action_tree" value="state_tree_reference_info">
+					<state_tree_node name="ActionTree_OpeningBranch" value="" />
+					<bool name="start_suspended" value="False" />
+				</template_reference>
+				<template_reference name="self_captured_action_tree" value="state_tree_reference_info">
+					<state_tree_node name="ActionTree_OpeningBranch" value="" />
+					<bool name="start_suspended" value="False" />
+				</template_reference>
+				<template_reference name="self_secured_action_tree" value="state_tree_reference_info">
+					<state_tree_node name="ActionTree_OpeningBranch" value="" />
+					<bool name="start_suspended" value="False" />
+				</template_reference>
+				<template_reference name="self_reverting_action_tree" value="state_tree_reference_info">
+					<state_tree_node name="ActionTree_OpeningBranch" value="" />
+					<bool name="start_suspended" value="False" />
+				</template_reference>
+				<template_reference name="self_uncaptured_action_tree" value="state_tree_reference_info">
+					<state_tree_node name="ActionTree_OpeningBranch" value="" />
+					<bool name="start_suspended" value="False" />
+				</template_reference>
+				<template_reference name="lost_point_player_action_tree" value="state_tree_reference_info">
+					<state_tree_node name="ActionTree_OpeningBranch" value="" />
+					<bool name="start_suspended" value="False" />
+				</template_reference>
+				<template_reference name="lost_point_team_action_tree" value="state_tree_reference_info">
+					<state_tree_node name="ActionTree_OpeningBranch" value="" />
+					<bool name="start_suspended" value="False" />
+				</template_reference>
+				<template_reference name="decapture_point_player_action_tree" value="state_tree_reference_info">
+					<state_tree_node name="ActionTree_OpeningBranch" value="" />
+					<bool name="start_suspended" value="False" />
+				</template_reference>
+				<template_reference name="halted_action_tree" value="state_tree_reference_info">
+					<state_tree_node name="ActionTree_OpeningBranch" value="" />
+					<bool name="start_suspended" value="False" />
+				</template_reference>
+			</group>
+			<template_reference name="secure_area_info" value="">
+			</template_reference>
+			<bool name="allow_capture_or_secure_from_hold" value="False" />
+			<bool name="ui_use_local_colour_for_ally_team_owned_objects" value="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="143598664">
+			<file name="alternate_sua" value="art\civilizations\english\structures\campaign_wood_fort\eng_campaign_wood_fort\eng_campaign_wood_fort" />
+			<bool name="always_revealed_in_fow" value="False" />
+			<bool name="is_visible_in_game" value="True" />
+			<int name="precise_size" value="-1" />
+			<enum name="default_spawn_type" value="" />
+			<instance_reference name="unit_badge" value="" />
+			<bool name="is_spawned_when_not_in_interactive_area" value="False" />
+			<bool name="is_wreck" value="False" />
+			<instance_reference name="animator_attachments" value="attachments\attachment_lists\civilizations\english\buildings\campaign\york_wooden_castle_eng" />
+			<float name="animator_scale" value="100" />
+			<bool name="browsable_in_editor" value="True" />
+			<float name="entity_scale" value="100" />
+			<enum name="subclass_type" value="Generic" />
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="193967" />
+	<instance_reference name="parent_pbg" value="" />
+</instance>

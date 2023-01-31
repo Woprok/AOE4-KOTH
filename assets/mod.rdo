@@ -1,0 +1,28 @@
+<DataWarehouse>
+	<!--King of the Hill/-->
+	<DataObject Name="King of the Hill" Type="Mod" Id="18358286115302111300" Version="1">
+		<DataProperty Name="m_description" Type="Object">
+			<DataValue Name="util::ReflectLocString">11527994840857093917</DataValue>
+			<!--King of the Hill/util::ReflectLocString/-->
+			<DataObject Name="" Type="util::ReflectLocString" Id="11527994840857093917" OwnerId="18358286115302111300">
+				<DataProperty Name="m_modPart2" Type="UInt32" Value="3719089341"/>
+				<DataProperty Name="m_modPart3" Type="UInt32" Value="1631253217"/>
+				<DataProperty Name="m_modPart0" Type="UInt32" Value="4203438593"/>
+				<DataProperty Name="m_modPart1" Type="UInt32" Value="1314260176"/>
+				<DataProperty Name="m_locStringKey" Type="Int32" Value="2"/>
+			</DataObject>
+		</DataProperty>
+		<DataProperty Name="m_name" Type="Object">
+			<DataValue Name="util::ReflectLocString">8691517642398279064</DataValue>
+			<!--King of the Hill/util::ReflectLocString/-->
+			<DataObject Name="" Type="util::ReflectLocString" Id="8691517642398279064" OwnerId="18358286115302111300">
+				<DataProperty Name="m_modPart2" Type="UInt32" Value="3719089341"/>
+				<DataProperty Name="m_modPart3" Type="UInt32" Value="1631253217"/>
+				<DataProperty Name="m_modPart0" Type="UInt32" Value="4203438593"/>
+				<DataProperty Name="m_modPart1" Type="UInt32" Value="1314260176"/>
+				<DataProperty Name="m_locStringKey" Type="Int32" Value="1"/>
+			</DataObject>
+		</DataProperty>
+	</DataObject>
+</DataWarehouse>
+
