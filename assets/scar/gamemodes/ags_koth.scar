@@ -16,7 +16,6 @@ import("ags_cardinal.scar")
 ---------------------------------------------------------------------------------------------------
 -- This file is loaded last, this means that all methods are invoked at the end of chain.
 -- It might be possible to assume that all imported modules are finished with the stage when we are called.
--- Hopefully noone will ever confuse this in code with Nomadic start... (I am sure I will :D)
 Core_RegisterModule("AGS_KOTH")	
 
 function AGS_KOTH_AdjustSettings()
@@ -29,10 +28,11 @@ function AGS_KOTH_AdjustSettings()
 	AGS_GLOBAL_SETTINGS.Wonder = false -- Player defend wonder. 
 		
 	AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySites = true
-	AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesUpRate = 6 -- approx 5 seconds, e.g. full time 30 / 6
-	AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesDownRate = 500 -- almost instant
-	AGS_GLOBAL_SETTINGS.ReligiousSettings.Refresh = true -- swaps to minimum always
-	AGS_GLOBAL_SETTINGS.ReligiousSettings.RefreshTimer = 3 -- minimum time in minutes
+	AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesUpRate = 1 -- expects tuning pack setting
+	AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesDownRate = 1 -- expects tuning pack setting
+	--AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge = AGS_GS_AGE_FEUDAL -- undefined, used by KOTH
+	--AGS_GLOBAL_SETTINGS.ReligiousSettings.Refresh = false -- swaps to minimum always
+	--AGS_GLOBAL_SETTINGS.ReligiousSettings.RefreshTimer = 10 -- minimum time in minutes
 	
 	-- Setting up everything that is not configurable for this mode.
 	AGS_GLOBAL_SETTINGS.UsingPrefabStart = true

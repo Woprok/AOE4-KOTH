@@ -12,6 +12,8 @@
 
 AGS_MILITARY_SITES_MODULE = "AGS_MilitarySites"
 AGS_MILITARY_SITES_MODIFIERS = { }
+AGS_MILITARY_SITES_BP_MILITARY = { }
+AGS_MILITARY_SITES_BP_KINGS = { }
 
 ---------------------------------------------------------------------------------------------------
 -- Delegates:
@@ -28,25 +30,131 @@ end
 
 function AGS_MilitarySites_PresetFinalize()
 	AGS_Print("AGS_MilitarySites_PresetFinalize")
-	AGS_MilitarySites_ApplyRates(BP_GetSquadBlueprintsWithType(AGS_BP_MILITARY))
-	AGS_MilitarySites_ApplyRates(BP_GetSquadBlueprintsWithType(AGS_BP_KING))
+	if AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_NONE then
+		return
+	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_DARK then
+		AGS_MilitarySites_ApplyRates(BP_GetSquadBlueprintsWithType(AGS_BP_MILITARY))
+		AGS_MilitarySites_ApplyRates(BP_GetSquadBlueprintsWithType(AGS_BP_KING))		
+	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_FEUDAL then
+		AGS_MILITARY_SITES_BP_MILITARY = BP_GetSquadBlueprintsWithType(AGS_BP_MILITARY)
+		AGS_MILITARY_SITES_BP_KINGS = BP_GetSquadBlueprintsWithType(AGS_BP_KING)
+		-- wait for later to apply change
+	end
+end
+
+function AGS_MilitarySites_OnPlay()
+	AGS_Print("AGS_MilitarySites_OnPlay")
+	if AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_FEUDAL then
+		Rule_AddGlobalEvent(AGS_MilitarySites_OnConstructionComplete, GE_ConstructionComplete)
+		Rule_AddGlobalEvent(AGS_MilitarySites_OnUpgradeComplete, GE_UpgradeComplete)
+	end
+end
+
+function AGS_MilitarySites_OnGameOver()
+	AGS_Print("AGS_MilitarySites_OnGameOver")
+	if AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_FEUDAL then
+		Rule_RemoveGlobalEvent(AGS_MilitarySites_OnConstructionComplete)
+		Rule_RemoveGlobalEvent(AGS_MilitarySites_OnUpgradeComplete)
+	end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Callbacks:
+---------------------------------------------------------------------------------------------------
+
+function AGS_MilitarySites_OnUpgradeComplete(context)
+	if context == nil or context.executer == nil or context.upgrade == nil then
+		return
+	end
+	local entity_id = context.executer
+	if scartype(entity_id) ~= ST_ENTITY or World_OwnsEntity(entity_id) then
+		return
+	end
+	local owner = Entity_GetPlayerOwner(entity_id)
+	if owner == nil then 
+		return
+	end
+	local player = Core_GetPlayersTableEntry(owner)
+	if player == nil or player.raceName ~= AGS_CIV_ABBASID then 
+		return
+	end
+	local pbg = context.upgrade
+	
+	if AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_FEUDAL and
+		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade_feudal") then
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_MILITARY, player.id)
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_KINGS, player.id)
+	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_CASTLE and
+		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade_castle") then
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_MILITARY, player.id)
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_KINGS, player.id)
+	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge >= AGS_GS_AGE_IMPERIAL and
+		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade_imperial") then
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_MILITARY, player.id)
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_KINGS, player.id)
+	end	
+end
+
+function AGS_MilitarySites_OnConstructionComplete(context)	
+	if context == nil or context.player == nil or context.entity == nil then 
+		return
+	end	
+	if World_OwnsEntity(context.entity) then
+		return
+	end	
+	local player = Core_GetPlayersTableEntry(context.player)
+	-- Eliminated players are not interesting.
+	if player.isEliminated or player.raceName == AGS_CIV_ABBASID then
+		return
+	end
+	-- We are looking only for landmarks.
+	if not AGS_IsALandmark(context.entity) then
+		return		
+	end
+	if AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_FEUDAL and
+		Entity_IsOfType(entity_id, "wonder_dark_age") then
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_MILITARY, player.id)
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_KINGS, player.id)
+	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_CASTLE and
+		Entity_IsOfType(entity_id, "wonder_feudal_age") then
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_MILITARY, player.id)
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_KINGS, player.id)
+	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge >= AGS_GS_AGE_IMPERIAL and
+		Entity_IsOfType(entity_id, "wonder_castle_age") then
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_MILITARY, player.id)
+		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_KINGS, player.id)
+	end	
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
--- This function changes rates for capture and revert of military sites.
+-- This function changes rates for capture and revert of military sites to single player [for feudal and later ages].
+function AGS_MilitarySites_ApplyRatesSingle(bps, playerId)
+	for _, sbp in pairs(bps) do 
+		if AGS_MILITARY_SITES_MODIFIERS[playerId][sbp.PropertyBagGroupID] == nil then
+			AGS_MILITARY_SITES_MODIFIERS[playerId][sbp.PropertyBagGroupID] = true
+			AGS_MilitarySites_ApplySetModifier(playerId, sbp, "capture_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesUpRate)
+			AGS_MilitarySites_ApplySetModifier(playerId, sbp, "capture_revert_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesDownRate)
+		end
+	end
+end
+-- This function changes rates for capture and revert of military sites to all.
 function AGS_MilitarySites_ApplyRates(bps)
 	for _, sbp in pairs(bps) do 
 		if AGS_MILITARY_SITES_MODIFIERS[sbp.PropertyBagGroupID] == nil then
 			AGS_MILITARY_SITES_MODIFIERS[sbp.PropertyBagGroupID] = true
 			for _, player in pairs(PLAYERS) do	
-				AGS_MilitarySites_ApplyAddModifier(player.id, sbp, "capture_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesUpRate)
-				AGS_MilitarySites_ApplyMulModifier(player.id, sbp, "capture_revert_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesDownRate)
+				AGS_MilitarySites_ApplySetModifier(player.id, sbp, "capture_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesUpRate)
+				AGS_MilitarySites_ApplySetModifier(player.id, sbp, "capture_revert_rate_squad_modifier", AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitarySitesDownRate)
 			end
 		end
 	end
 end
+-- Apply function.
+function AGS_MilitarySites_ApplySetModifier(player_id, modifier_sbp, modifier_type, modifier_value)
+	Modifier_ApplyToPlayer(Modifier_Create(MAT_SquadType, modifier_type, MUT_Set, false, modifier_value, modifier_sbp), player_id, 0.0)
+end	
 -- Apply function.
 function AGS_MilitarySites_ApplyAddModifier(player_id, modifier_sbp, modifier_type, modifier_value)
 	Modifier_ApplyToPlayer(Modifier_Create(MAT_SquadType, modifier_type, MUT_Addition, false, modifier_value, modifier_sbp), player_id, 0.0)

@@ -110,8 +110,9 @@ AGS_GLOBAL_SETTINGS = {
 		MilitarySites = false, -- undefined, used by KOTH
 		Refresh = true, -- undefined, as it's always active
 		RefreshTimer = 1, -- undefined, in minutes as all other timers
-		MilitarySitesUpRate = 1000, -- undefined, used by KOTH
-		MilitarySitesDownRate = 1000, -- undefined, used by KOTH
+		MilitarySitesUpRate = 1, -- undefined, used by KOTH
+		MilitarySitesDownRate = 1, -- undefined, used by KOTH
+		MilitaryCaptureAge = AGS_GS_AGE_NONE, -- undefined, used by KOTH
 	},
 	WonderSettings = {
 		Timer = 15,
@@ -362,6 +363,13 @@ function AGS_GlobalSettings_DefineWinSettings(category)
 	end
 	if category.option_win_setting_score_show_placement ~= nil then
 		AGS_GLOBAL_SETTINGS.ScoreSettings.ShowPlacement = category.option_win_setting_score_show_placement
+	end	
+	
+	if category.option_win_setting_religious_refresh_timer then
+		AGS_GlobalSettings_SetReligiousRefreshTimer(category.option_win_setting_religious_refresh_timer)
+	end
+	if category.option_win_setting_religious_military_capture_age ~= nil then
+		AGS_GlobalSettings_SetReligiousMilitaryCaptureAge(category.option_win_setting_religious_military_capture_age)
 	end
 end
 
@@ -479,6 +487,36 @@ end
 ---------------------------------------------------------------------------------------------------
 -- Assignment Functions:
 ---------------------------------------------------------------------------------------------------
+
+function AGS_GlobalSettings_SetReligiousMilitaryCaptureAge(capture_age)	
+	if capture_age.enum_value == capture_age.enum_items.capture_age_0 then
+		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_NONE 
+	elseif capture_age.enum_value == capture_age.enum_items.capture_age_1 then
+		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_DARK 
+	elseif capture_age.enum_value == capture_age.enum_items.capture_age_2 then
+		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_FEUDAL 
+	elseif capture_age.enum_value == capture_age.enum_items.capture_age_3 then
+		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_CASTLE 
+	elseif capture_age.enum_value == capture_age.enum_items.capture_age_4 then
+		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_IMPERIAL 	
+	elseif capture_age.enum_value == capture_age.enum_items.capture_age_5 then
+		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_LATE_IMPERIAL 		
+	end
+end
+
+function AGS_GlobalSettings_SetReligiousRefreshTimer(religious_timer)
+	AGS_GLOBAL_SETTINGS.ReligiousSettings.Refresh = true
+	if religious_timer.enum_value == religious_timer.enum_items.religious_refresh_timer_0 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.Refresh = false
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.RefreshTimer = 0
+	elseif religious_timer.enum_value == religious_timer.enum_items.religious_refresh_timer_1 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.RefreshTimer = 1
+	elseif religious_timer.enum_value == religious_timer.enum_items.religious_refresh_timer_3 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.RefreshTimer = 3
+	elseif religious_timer.enum_value == religious_timer.enum_items.religious_refresh_timer_5 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.RefreshTimer = 5
+	end
+end
 
 function AGS_GlobalSettings_SetHandicapType(handicap_type)
 	if handicap_type.enum_value == handicap_type.enum_items.handicap_type_none then
