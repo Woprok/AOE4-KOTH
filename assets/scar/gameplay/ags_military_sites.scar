@@ -12,6 +12,7 @@
 
 AGS_MILITARY_SITES_MODULE = "AGS_MilitarySites"
 AGS_MILITARY_SITES_MODIFIERS = { }
+AGS_MILITARY_SITES_SCALE_MODIFIERS = { }
 AGS_MILITARY_SITES_BP_MILITARY = { }
 AGS_MILITARY_SITES_BP_KINGS = { }
 
@@ -48,6 +49,13 @@ function AGS_MilitarySites_OnPlay()
 		Rule_AddGlobalEvent(AGS_MilitarySites_OnConstructionComplete, GE_ConstructionComplete)
 		Rule_AddGlobalEvent(AGS_MilitarySites_OnUpgradeComplete, GE_UpgradeComplete)
 	end
+	
+	if AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome < 100 then
+		Rule_AddGlobalEvent(AGS_MilitarySites_Site_OnConstructionComplete, GE_ConstructionComplete)
+		Rule_AddGlobalEvent(AGS_MilitarySites_Site_OnUpgradeComplete, GE_UpgradeComplete)
+	else
+		AGS_MilitarySites_ScaleSitesStatic()			
+	end		
 end
 
 function AGS_MilitarySites_OnGameOver()
@@ -56,11 +64,106 @@ function AGS_MilitarySites_OnGameOver()
 		Rule_RemoveGlobalEvent(AGS_MilitarySites_OnConstructionComplete)
 		Rule_RemoveGlobalEvent(AGS_MilitarySites_OnUpgradeComplete)
 	end
+	
+	if AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome < 100 then
+		Rule_RemoveGlobalEvent(AGS_MilitarySites_Site_OnConstructionComplete, GE_ConstructionComplete)
+		Rule_RemoveGlobalEvent(AGS_MilitarySites_Site_OnUpgradeComplete, GE_UpgradeComplete)	
+	end
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Callbacks:
 ---------------------------------------------------------------------------------------------------
+
+function AGS_MilitarySites_ScaleSitesStatic()
+	if AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome <= 100 then
+		return
+	end
+	local scaleValue = AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome / 100
+	
+	for _, player in pairs(PLAYERS) do	
+		Player_SetStateModelFloat(player.id, "sacred_site_gold_income_per_second", 1.667 * scaleValue)	
+	end
+end
+
+function AGS_MilitarySites_ScaleSitesDynamic(playerId, age)
+	local mulAgeValue = 0
+	if AGS_MILITARY_SITES_SCALE_MODIFIERS[2][playerId] ~= true then
+		AGS_MILITARY_SITES_SCALE_MODIFIERS[2][playerId] = true
+		mulAgeValue = 1
+	elseif AGS_MILITARY_SITES_SCALE_MODIFIERS[3][playerId] ~= true then
+		AGS_MILITARY_SITES_SCALE_MODIFIERS[3][playerId] = true
+		mulAgeValue = 2		
+	elseif AGS_MILITARY_SITES_SCALE_MODIFIERS[4][playerId] ~= true then
+		AGS_MILITARY_SITES_SCALE_MODIFIERS[4][playerId] = true	
+		mulAgeValue = 3		
+	end
+	if mulAgeValue == 0 then
+		return
+	end
+	local mulScaleValue = AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome
+		
+	Player_SetStateModelFloat(player.id, "sacred_site_gold_income_per_second", 
+		1.667 + 1.667 * mulAgeValue * mulScaleValue)
+end
+
+function AGS_MilitarySites_Site_OnUpgradeComplete(context)
+	if context == nil or context.executer == nil or context.upgrade == nil then
+		return
+	end
+	local entity_id = context.executer
+	if scartype(entity_id) ~= ST_ENTITY or World_OwnsEntity(entity_id) then
+		return
+	end
+	local owner = Entity_GetPlayerOwner(entity_id)
+	if owner == nil then 
+		return
+	end
+	local player = Core_GetPlayersTableEntry(owner)
+	if player == nil or player.raceName ~= AGS_CIV_ABBASID then 
+		return
+	end
+	local pbg = context.upgrade
+	
+	if AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_FEUDAL and
+		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade") then
+		AGS_MilitarySites_ScaleSitesDynamic(player.id, 2)
+	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_CASTLE and
+		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade_feudal") then
+		AGS_MilitarySites_ScaleSitesDynamic(player.id, 3)
+	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge >= AGS_GS_AGE_IMPERIAL and
+		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade_castle") then
+		AGS_MilitarySites_ScaleSitesDynamic(player.id, 4)
+	end		
+end
+
+function AGS_MilitarySites_Site_OnConstructionComplete(context)	
+	if context == nil or context.player == nil or context.entity == nil then 
+		return
+	end	
+	if World_OwnsEntity(context.entity) then
+		return
+	end	
+	local player = Core_GetPlayersTableEntry(context.player)
+	-- Eliminated players are not interesting.
+	if player.isEliminated or player.raceName == AGS_CIV_ABBASID then
+		return
+	end
+	-- We are looking only for landmarks.
+	if not AGS_IsALandmark(context.entity) then
+		return		
+	end
+	if AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_FEUDAL and
+		Entity_IsOfType(entity_id, "wonder_dark_age") then
+		AGS_MilitarySites_ScaleSitesDynamic(player.id, 2)		
+	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_CASTLE and
+		Entity_IsOfType(entity_id, "wonder_feudal_age") then
+		AGS_MilitarySites_ScaleSitesDynamic(player.id, 3)		
+	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge >= AGS_GS_AGE_IMPERIAL and
+		Entity_IsOfType(entity_id, "wonder_castle_age") then
+		AGS_MilitarySites_ScaleSitesDynamic(player.id, 4)		
+	end	
+end
 
 function AGS_MilitarySites_OnUpgradeComplete(context)
 	if context == nil or context.executer == nil or context.upgrade == nil then
@@ -81,18 +184,18 @@ function AGS_MilitarySites_OnUpgradeComplete(context)
 	local pbg = context.upgrade
 	
 	if AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_FEUDAL and
-		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade_feudal") then
+		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade") then
 		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_MILITARY, player.id)
 		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_KINGS, player.id)
 	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge == AGS_GS_AGE_CASTLE and
-		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade_castle") then
+		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade_feudal") then
 		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_MILITARY, player.id)
 		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_KINGS, player.id)
 	elseif AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge >= AGS_GS_AGE_IMPERIAL and
-		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade_imperial") then
+		BP_IsUpgradeOfType(pbg, "abbasid_wing_upgrade_castle") then
 		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_MILITARY, player.id)
 		AGS_MilitarySites_ApplyRatesSingle(AGS_MILITARY_SITES_BP_KINGS, player.id)
-	end	
+	end		
 end
 
 function AGS_MilitarySites_OnConstructionComplete(context)	

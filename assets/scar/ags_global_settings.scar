@@ -108,6 +108,7 @@ AGS_GLOBAL_SETTINGS = {
 		ResumableTimer = false,
 		SingleCentralSite = false,
 		MilitarySites = false, -- undefined, used by KOTH
+		SiteGoldIncome = 100, --undefined, used by KOTH
 		Refresh = true, -- undefined, as it's always active
 		RefreshTimer = 1, -- undefined, in minutes as all other timers
 		MilitarySitesUpRate = 1, -- undefined, used by KOTH
@@ -368,8 +369,11 @@ function AGS_GlobalSettings_DefineWinSettings(category)
 	if category.option_win_setting_religious_refresh_timer then
 		AGS_GlobalSettings_SetReligiousRefreshTimer(category.option_win_setting_religious_refresh_timer)
 	end
-	if category.option_win_setting_religious_military_capture_age ~= nil then
+	if category.option_win_setting_religious_military_capture_age then
 		AGS_GlobalSettings_SetReligiousMilitaryCaptureAge(category.option_win_setting_religious_military_capture_age)
+	end
+	if category.option_win_setting_religious_site_gold_income then
+		AGS_GlobalSettings_SetReligiousSiteGoldIncome(category.option_win_setting_religious_site_gold_income)
 	end
 end
 
@@ -488,19 +492,43 @@ end
 -- Assignment Functions:
 ---------------------------------------------------------------------------------------------------
 
+function AGS_GlobalSettings_SetReligiousSiteGoldIncome(gold_scale)	
+	if gold_scale.enum_value == gold_scale.enum_items.gold_scale_static_100 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome = 100 
+	elseif gold_scale.enum_value == gold_scale.enum_items.gold_scale_static_200 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome = 200 
+	elseif gold_scale.enum_value == gold_scale.enum_items.gold_scale_static_300 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome = 300 
+	elseif gold_scale.enum_value == gold_scale.enum_items.gold_scale_static_400 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome = 400 
+	elseif gold_scale.enum_value == gold_scale.enum_items.gold_scale_static_500 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome = 500 	
+	elseif gold_scale.enum_value == gold_scale.enum_items.gold_scale_static_600 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome = 600 	
+	elseif gold_scale.enum_value == gold_scale.enum_items.gold_scale_static_800 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome = 800 	
+	elseif gold_scale.enum_value == gold_scale.enum_items.gold_scale_dynamic_1 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome = 1 	
+	elseif gold_scale.enum_value == gold_scale.enum_items.gold_scale_dynamic_2 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome = 2 
+	elseif gold_scale.enum_value == gold_scale.enum_items.gold_scale_dynamic_3 then
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome = 3 		
+	end
+end
+
 function AGS_GlobalSettings_SetReligiousMilitaryCaptureAge(capture_age)	
 	if capture_age.enum_value == capture_age.enum_items.capture_age_0 then
-		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_NONE 
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge = AGS_GS_AGE_NONE 
 	elseif capture_age.enum_value == capture_age.enum_items.capture_age_1 then
-		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_DARK 
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge = AGS_GS_AGE_DARK 
 	elseif capture_age.enum_value == capture_age.enum_items.capture_age_2 then
-		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_FEUDAL 
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge = AGS_GS_AGE_FEUDAL 
 	elseif capture_age.enum_value == capture_age.enum_items.capture_age_3 then
-		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_CASTLE 
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge = AGS_GS_AGE_CASTLE 
 	elseif capture_age.enum_value == capture_age.enum_items.capture_age_4 then
-		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_IMPERIAL 	
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge = AGS_GS_AGE_IMPERIAL 	
 	elseif capture_age.enum_value == capture_age.enum_items.capture_age_5 then
-		AGS_GLOBAL_SETTINGS.EndingAge = AGS_GS_AGE_LATE_IMPERIAL 		
+		AGS_GLOBAL_SETTINGS.ReligiousSettings.MilitaryCaptureAge = AGS_GS_AGE_LATE_IMPERIAL 		
 	end
 end
 
