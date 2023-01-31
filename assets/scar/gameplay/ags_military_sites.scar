@@ -88,13 +88,13 @@ end
 
 function AGS_MilitarySites_ScaleSitesDynamic(playerId, age)
 	local mulAgeValue = 0
-	if AGS_MILITARY_SITES_SCALE_MODIFIERS[2][playerId] ~= true then
+	if age == 2 and AGS_MILITARY_SITES_SCALE_MODIFIERS[2][playerId] ~= true then
 		AGS_MILITARY_SITES_SCALE_MODIFIERS[2][playerId] = true
 		mulAgeValue = 1
-	elseif AGS_MILITARY_SITES_SCALE_MODIFIERS[3][playerId] ~= true then
+	elseif age == 3 and AGS_MILITARY_SITES_SCALE_MODIFIERS[3][playerId] ~= true then
 		AGS_MILITARY_SITES_SCALE_MODIFIERS[3][playerId] = true
 		mulAgeValue = 2		
-	elseif AGS_MILITARY_SITES_SCALE_MODIFIERS[4][playerId] ~= true then
+	elseif age == 4 and AGS_MILITARY_SITES_SCALE_MODIFIERS[4][playerId] ~= true then
 		AGS_MILITARY_SITES_SCALE_MODIFIERS[4][playerId] = true	
 		mulAgeValue = 3		
 	end
@@ -103,7 +103,7 @@ function AGS_MilitarySites_ScaleSitesDynamic(playerId, age)
 	end
 	local mulScaleValue = AGS_GLOBAL_SETTINGS.ReligiousSettings.SiteGoldIncome
 		
-	Player_SetStateModelFloat(player.id, "sacred_site_gold_income_per_second", 
+	Player_SetStateModelFloat(playerId, "sacred_site_gold_income_per_second", 
 		1.667 + 1.667 * mulAgeValue * mulScaleValue)
 end
 
