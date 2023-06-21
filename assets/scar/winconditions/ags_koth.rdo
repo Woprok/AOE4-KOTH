@@ -2,12 +2,20 @@
 	<!--WinCondition/-->
 	<DataObject Name="" Type="WinCondition" Id="10625015218133805928">
 		<DataProperty Name="m_maxTeams" Type="Int32" Value="-1"/>
+		<DataProperty Name="m_startingCondition" Type="Object">
+			<DataValue Name="FamilyManagerEnum&lt;FamilyManager::FamilyType::TYP_StartingCondition,StdTraits&gt;">17175420962455515723</DataValue>
+			<!--WinCondition/FamilyManagerEnum<FamilyManager::FamilyType::TYP_StartingCondition,StdTraits>/-->
+			<DataObject Name="" Type="FamilyManagerEnum&lt;FamilyManager::FamilyType::TYP_StartingCondition,StdTraits&gt;" Id="17175420962455515723" OwnerId="10625015218133805928">
+				<DataProperty Name="m_enumName" Type="String" Value=""/>
+			</DataObject>
+		</DataProperty>
 		<DataProperty Name="m_gameModeType" Type="String" Value=""/>
 		<DataProperty Name="m_scarWinConditionFile" Type="String" Value="gamemodes\ags_koth"/>
+		<DataProperty Name="m_feAllowSelectingStartingLocations" Type="Bool" Value="true"/>
 		<DataProperty Name="m_playerUpgrades" Type="Object"/>
-		<DataProperty Name="m_feIcon" Type="String" Value="images\illustrations\create_game\game_mode_custom_selected"/>
+		<DataProperty Name="m_feIcon" Type="String" Value="images\illustrations\create_game\game_mode_keep_rush_selected"/>
 		<DataProperty Name="m_scarMissionFile" Type="String" Value=""/>
-		<DataProperty Name="m_feImageSelected" Type="String" Value="images\illustrations\create_game\game_mode_custom_selected"/>
+		<DataProperty Name="m_feImageSelected" Type="String" Value="images\illustrations\create_game\game_mode_keep_rush_selected"/>
 		<DataProperty Name="m_feDescriptionTooltip" Type="Object">
 			<DataValue Name="util::ReflectLocString">8837631394392532497</DataValue>
 			<!--WinCondition/util::ReflectLocString/-->
@@ -2920,12 +2928,12 @@
 		</DataProperty>
 		<DataProperty Name="m_name" Type="String" Value="advanced_game_settings_koth_tournament_bundle"/>
 		<DataProperty Name="m_objectiveUnitTypes" Type="Object"/>
-		<DataProperty Name="m_devOnly" Type="Bool" Value="true"/>
+		<DataProperty Name="m_devOnly" Type="Bool" Value="false"/>
 		<DataProperty Name="m_egroupNamePrefixDestroyList" Type="String"/>
 		<DataProperty Name="m_permittedInventoryItemCategories" Type="String">
 			<DataValue>IIT_PlayerCosmetic</DataValue>
 		</DataProperty>
-		<DataProperty Name="m_feImageUnselected" Type="String" Value="images\illustrations\create_game\game_mode_custom_unselected"/>
+		<DataProperty Name="m_feImageUnselected" Type="String" Value="images\illustrations\create_game\game_mode_keep_rush_unselected"/>
 	</DataObject>
 </DataWarehouse>
 
